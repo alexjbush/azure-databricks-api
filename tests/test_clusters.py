@@ -77,7 +77,7 @@ def test_create_cluster(cluster_name, spark_versions, smallest_node):
                                      spark_version=list(spark_versions.keys())[0], node_type_id=smallest_node)
 
 
-def test_create_cluster_with_autoscale(cluster_name, spark_versions, smallest_node):
+def test_create_cluster_with_autoscale(cluster_name, spark_versions, smallest_node, autoscale_num_workers):
     cluster = client.clusters.create(cluster_name=cluster_name, num_workers=autoscale_num_workers,
                                      spark_version=list(spark_versions.keys())[0], node_type_id=smallest_node)
 
