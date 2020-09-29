@@ -51,6 +51,14 @@ def smallest_node(node_types):
     return sorted_nodes[0]['node_type_id']
 
 
+@pytest.fixture(scope="module")
+def autoscale_num_workers():
+    return {
+        "min_workers": 0,
+        "max_workers": 0
+    }
+
+
 def test_create_cluster_invalid_spark_version_raises(cluster_name, smallest_node):
     with pytest.raises(ValueError):
         _ = client.clusters.create(cluster_name=cluster_name, num_workers=0,
@@ -66,6 +74,11 @@ def test_create_cluster_invalid_node_raises_error(cluster_name, spark_versions):
 
 def test_create_cluster(cluster_name, spark_versions, smallest_node):
     cluster = client.clusters.create(cluster_name=cluster_name, num_workers=0,
+                                     spark_version=list(spark_versions.keys())[0], node_type_id=smallest_node)
+
+
+def test_create_cluster_with_autoscale(cluster_name, spark_versions, smallest_node):
+    cluster = client.clusters.create(cluster_name=cluster_name, num_workers=autoscale_num_workers,
                                      spark_version=list(spark_versions.keys())[0], node_type_id=smallest_node)
 
 
